@@ -1,0 +1,71 @@
+<h1>Checkout</h1>
+<div class="total">
+<table>
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Quantity</th>
+      <th>Total Price</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% if @cart_items.any? %>
+    <% @cart_items.each do |item| %>
+      <% if item.product %>
+        <tr>
+          <td><%= item.product.name %></td>
+          <td><%= number_to_currency(item.product.price) %></td>
+          <td><%= item.quantity %></td>
+          <td><%= number_to_currency(item.product.price * item.quantity) %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  <% else %>
+    <tr>
+      <td colspan="4">Your cart is empty.</td>
+    </tr>
+  <% end %>
+</tbody>
+</div>
+
+<h3>Total: <%= number_to_currency(@total) %></h3>
+
+
+<%= form_for @order, url: payment_checkout_checkout_index_path do |f| %>
+  <h2>Address Information</h2>
+  <div>
+    <%= f.label :street %>
+    <%= f.text_field :street %>
+  </div>
+  <div>
+    <%= f.label :city %>
+    <%= f.text_field :city %>
+  </div>
+  <div>
+    <%= f.label :province %>
+    <%= f.text_field :province %>
+  </div>
+  <div>
+    <%= f.label :postal_code %>
+    <%= f.text_field :postal_code %>
+  </div>
+
+
+
+
+<h2>Payment Information</h2>
+  <div class="form-group">
+    <%= f.label :card_number, "Card Number" %>
+    <%= f.text_field :card_number, class: "form-control", maxlength: 16, placeholder: "1234 5678 9012 3456" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :expiry_date, "Expiry Date" %>
+    <%= f.text_field :expiry_date, class: "form-control", placeholder: "MM/YY" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :cvc, "CVC" %>
+    <%= f.text_field :cvc, class: "form-control", maxlength: 3, placeholder: "123" %>
+  </div>
+
+  <%= f.submit "Complete Order", class: "btn btn-success" %>
+<% end %>

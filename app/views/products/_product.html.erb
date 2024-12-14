@@ -1,0 +1,17 @@
+<div class="product-item">
+  <h3><%= product.name %></h3>
+  <p><%= number_to_currency(product.price) %></p>
+
+  <% if product.image.attached? %>
+    <%= image_tag product.image, class: "product-image" %>
+  <% end %>
+
+  <%= link_to "View Details", product_path(product), class: 'button is-link' %>
+
+  <% if user_signed_in? %>
+  <%= button_to "Add to Cart", add_to_cart_cart_index_path(product_id: product.id), method: :post, class: 'btn btn-primary' %>
+<% else %>
+  <%= link_to "Sign in to Add to Cart", new_user_session_path, class: 'btn btn-primary' %>
+<% end %>
+
+</div>

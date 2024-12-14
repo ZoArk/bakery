@@ -1,0 +1,29 @@
+
+<h1>Categories Management</h1>
+<div class="links">
+<%= link_to 'Back to Dashboard', admin_dashboard_path, class: 'button is-link' %>
+<%= link_to "Add New Category", new_admin_category_path, class: "button" %>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @categories.each do |category| %>
+      <tr>
+        <td><%= category.name %></td>
+        <td><%= category.description %></td>
+        <td>
+        <%= link_to "Edit", edit_admin_category_path(category) %> |
+        <%= link_to "Delete", admin_category_path(category),
+                    data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+      </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

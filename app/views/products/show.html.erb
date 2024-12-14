@@ -1,0 +1,25 @@
+<div class="product-details">
+  <h1><%= @product.name %></h1>
+
+  <p><strong>Price:</strong> <%= number_to_currency(@product.price) %></p>
+  <p><strong>Stock:</strong> <%= @product.stock_quantity %></p>
+  <p><strong>Category:</strong> <%= @product.category&.name || "Uncategorized" %></p>
+  <p><strong>Description:</strong> <%= @product.description %></p>
+
+  <% if @product.image.attached? %>
+    <p><strong>Image:</strong></p>
+    <%= image_tag @product.image, alt: @product.name, class: "product-image" %>
+  <% end %>
+
+
+<nav>
+<% if user_signed_in? %>
+<%= button_to "Add to Cart", add_to_cart_cart_index_path(product_id: @product.id), method: :post, class: 'btn btn-primary' %>
+<% else %>
+<%= link_to "Sign in to Add to Cart", new_user_session_path, class: 'btn btn-primary' %>
+<% end %>
+
+  <%= link_to "Back to Products", products_path, class: "button" %>
+</nav>
+
+</div>

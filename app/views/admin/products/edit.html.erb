@@ -1,0 +1,38 @@
+<h1>Admin::Products Edit</h1>
+
+<div class="links">
+<%= link_to "Back to Products", admin_products_path, class: "button is-link" %>
+</div>
+
+<%= form_with(model: @product, url: admin_product_path(@product), method: :patch) do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+
+  <%= f.label :price %>
+  <%= f.number_field :price %>
+
+  <%= f.label :stock_quantity %>
+  <%= f.number_field :stock_quantity %>
+
+  <%= f.label :description %>
+  <%= f.text_area :description %>
+
+  <%= f.label :category %>
+  <%= f.collection_select :category_id, Category.all, :id, :name, prompt: "Select Category" %>
+
+  <%= f.label :image %>
+  <%= f.file_field :image %>
+
+  <%= f.submit 'Save' %>
+<% end %>
+
+<% if @product.errors.any? %>
+  <div class="errors">
+    <h2><%= pluralize(@product.errors.count, "error") %> prohibited this product from being saved:</h2>
+    <ul>
+      <% @product.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

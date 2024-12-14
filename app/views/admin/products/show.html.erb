@@ -1,0 +1,19 @@
+<h1>Product Details</h1>
+
+<p><strong>Name:</strong> <%= @product.name %></p>
+<p><strong>Price:</strong> <%= number_to_currency(@product.price) %></p>
+<p><strong>Stock:</strong> <%= @product.stock_quantity %></p>
+<p><strong>Category:</strong> <%= @product.category&.name || "Uncategorized" %></p>
+<p><strong>Description:</strong> <%= @product.description %></p>
+
+<% if @product.image.attached? %>
+  <p><strong>Image:</strong></p>
+  <%= image_tag @product.image, alt: @product.name, class: "product-image" %>
+<% end %>
+
+<%= link_to "Edit", edit_admin_product_path(@product) %> |
+<%= link_to "Delete", admin_product_path(@product), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+
+<div class="links">
+<p><%= link_to 'Back to Products', admin_products_path, class: 'button is-link' %></p>
+</div>

@@ -1,0 +1,75 @@
+<%= javascript_include_tag 'application', 'data-turbo-track': 'reload', defer: true %>
+
+
+<h1>
+  Welcome
+  <% if user_signed_in? %>
+    <%= current_user.email.split('@').first.capitalize %>!
+  <% else %>
+    Guest!
+  <% end %>
+</h1>
+
+
+<div class="hometop">
+
+  <% if user_signed_in? %>
+    <%= link_to "Logout", destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: 'btn btn-secondary' %>
+
+  <% else %>
+    <%= link_to "Login", new_user_session_path %>
+  <% end %>
+
+  <nav>
+  <% if admin_user? %>
+      <%= link_to "Admin Dashboard", admin_dashboard_path %>
+    <% end %>
+    <%= link_to "Home", root_path %>
+    <%= link_to "About Us", about_path %>
+
+<% if current_user && current_user.cart.present? %>
+  <%= link_to 'View Cart', cart_path(current_user.cart.id), class: 'btn btn-info' %>
+<% elsif session[:cart_id] && Cart.exists?(session[:cart_id]) %>
+  <%= link_to 'View Cart', cart_path(session[:cart_id]), class: 'btn btn-info' %>
+<% else %>
+  <p>No cart available</p>
+<% end %>
+
+
+
+
+  </nav>
+
+</div>
+
+<%= form_tag(products_path, method: :get, class: 'search-form') do %>
+  <%= text_field_tag :query, params[:query], placeholder: "Search products..." %>
+  <%= submit_tag "Search", class: 'button is-primary' %>
+<% end %>
+
+<div class="welcome">
+  <p>Welcome to Sweet Prairie Bakery! We are delighted to have you here. Explore our freshly baked goods, learn more about our story, and experience the taste of locally-sourced, artisanal treats.</p>
+</div>
+
+<div class="categories-filter">
+  <h2>Filter by Category:</h2>
+  <ul>
+    <% Category.all.each do |category| %>
+      <li>
+        <%= link_to category.name, products_path(category_id: category.id), class: "btn btn-category" %>
+      </li>
+    <% end %>
+  </ul>
+  <%= link_to "Show All", products_path, class: "btn btn-reset" %>
+</div>
+
+<div class="products-grid">
+  <%= render @products %>
+</div>
+
+<%= paginate @products %>
+
+
+<footer>
+<p>&copy; <%= Time.now.year %> Sweet Prairie Bakery. All rights reserved.</p>
+</footer>
